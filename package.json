@@ -1,0 +1,20 @@
+{
+  "name": "d3-project",
+  "version": "4.4.0",
+  "description": "Ready to go d3",
+  "main": "d3.js",
+  "dependencies": {
+    "webpack": "^1.14.0"
+  },
+  "devDependencies": {
+	"d3":"4.4.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "d3js"
+  ],
+  "author": "Alice",
+  "license": "ISC"
+}
