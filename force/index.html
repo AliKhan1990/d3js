@@ -44,14 +44,12 @@
 	      .style("stroke",function(d) { if(d.value>=5 && d.value<10){
 			return "skyblue"	      	
 	      }else if(d.value>=10 && d.value<=15){
-	      	return "greenyellow"
+	      	return "purple"
 	      }else if(d.value>15){
-	      	return "pink"
+	      	return "deepgreen"
 	      }
 	      })
-	      
-
-	  var node = svg.append("g")
+	        var node = svg.append("g")
 	      .attr("class", "nodes")
 	    .selectAll("circle")
 	    .data(graph.nodes)

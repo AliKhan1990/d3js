@@ -62,7 +62,7 @@ d3.layout.chord = function() {
       groups,
       matrix,
       n,
-      padding = 0,
+      padding = 0.2,
       sortGroups,
       sortSubgroups,
       sortChords;
