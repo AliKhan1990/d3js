@@ -783,16 +783,9 @@ function buildGUI(selector, opts) {
         .attr("href","#collapseGUI")
         .attr("aria-expanded","true")
         .attr("aria-controls","collapseGUI")
-        //.html("<i class='fa fa-chevron-right'></i> Controls")
-        .html('Controls')
-      .append("button")
-        .attr('class', 'btn btn-success pull-right btn')
-        .style('padding','1px 7px')
-        .on("click",saveSVG)
-        .append('i')
-        .attr('class','fa fa-floppy-o')
-        .attr('title','Save image')
-
+//        .html("<i class='fa fa-chevron-right'></i> 控制栏")
+      .html('控制栏')
+      
     var gui = collapse.append("div")
         .attr("id","collapseGUI")
         .attr("class","panel-collapse collapse in")
@@ -814,23 +807,23 @@ function buildGUI(selector, opts) {
     tmp.append("button")
         .attr("class","btn btn-info")
         .attr("id","rectangular")
-        .attr("title","Generate a rectangular layout")
+        .attr("title","输出矩形树结构")
         .attr("onclick","options.treeType = this.id; updateTree();")
-        .html('<i class="fa fa-square-o fa-lg" aria-hidden="true"></i>')
+        .html('圆形')
 
     tmp.append("button")
-        .attr("class","btn btn-warning")
+        .attr("class","btn btn-danger")
         .attr("id","radial")
-        .attr("title","Generate a radial layout")
+        .attr("title","输出圆形树结构")
         .attr("onclick","options.treeType = this.id; updateTree();")
-        .html('<i class="fa fa-circle-thin fa-lg" aria-hidden="true"></i>')
+        .html('矩形')
 
     tmp.append("button")
         .attr("class","btn btn-success")
         .attr("id","reset")
-        .attr("title","Reset view")
+        .attr("title","重置")
         .attr("onclick","fitTree();")
-        .html('<i class="fa fa-arrows-alt" aria-hidden="true"></i>')
+        .html('重置')
 
     var check1 = col1.append("div")
         .attr("class","checkbox")
@@ -843,7 +836,7 @@ function buildGUI(selector, opts) {
         .attr("onclick","updateTree()")
 
     check1.append('text')
-        .text("Toggle distance labels")
+        .text("切换距离标签")
 
     var check2 = col1.append("div")
         .attr("class","checkbox")
@@ -856,7 +849,7 @@ function buildGUI(selector, opts) {
         .attr("onclick","updateTree()")
 
     check2.append('text')
-        .text("Toggle leaf labels")
+        .text("切换叶标签")
 
     var check3 = col1.append("div")
         .attr("class","checkbox")
@@ -869,7 +862,7 @@ function buildGUI(selector, opts) {
         .attr("onclick","updateTree()")
 
     check3.append('text')
-        .text("Scale by distance")
+        .text("距离缩放")
 
     
     // if mapping file was passed
@@ -949,7 +942,7 @@ function buildGUI(selector, opts) {
         .attr("class","col-sm-2")
 
     col4.append("label")
-        .text("Vertical scale")
+        .text("垂直比例尺")
 
     col4.append("div")
         .attr("id","scaleH")
@@ -971,7 +964,7 @@ function buildGUI(selector, opts) {
     });
 
     col4.append("label")
-        .text("Leaf radius")
+        .text("叶半径")
 
     col4.append("div")
         .attr("id","leafR")
@@ -993,7 +986,7 @@ function buildGUI(selector, opts) {
     });
 
     col4.append("label")
-        .text("Rotation")
+        .text("旋转")
 
     col4.append("div")
         .attr("id","rotation")
