@@ -34,14 +34,22 @@
 	
 	d3.json("miserables.json", function(error, graph) {
 	  if (error) throw error;
-	
+	//权重线
 	  var link = svg.append("g")
 	      .attr("class", "links")
 	    .selectAll("line")
 	    .data(graph.links)
 	    .enter().append("line")
 	      .attr("stroke-width", function(d) { return Math.sqrt(d.value); })
-	      .attr("fill", "grey");
+	      .style("stroke",function(d) { if(d.value>=5 && d.value<10){
+			return "skyblue"	      	
+	      }else if(d.value>=10 && d.value<=15){
+	      	return "greenyellow"
+	      }else if(d.value>15){
+	      	return "pink"
+	      }
+	      })
+	      
 
 	  var node = svg.append("g")
 	      .attr("class", "nodes")
@@ -54,7 +62,6 @@
 	          .on("start", dragstarted)
 	          .on("drag", dragged)
 	          .on("end", dragended));
-	
 	  node.append("title")
 	      .text(function(d) { return d.id; });
 	
