@@ -43,12 +43,12 @@ ScatterMatrix.prototype.render = function () {
                          .attr('class', 'scatter-matrix-control');
   var svg = container.append('div')
                      .attr('class', 'scatter-matrix-svg')
-                     .html('<em>Loading data...</em>');
+                     .html('<em>正在载入...</em>');
 
   this.onData(function() {
     var data = self.__data;
 
-    // Divide variables into string and numeric variables
+    // 将变量划分为字符串和数字变量
 
     var string_variables = [];
     var original_numeric_variables = [];
@@ -71,7 +71,8 @@ ScatterMatrix.prototype.render = function () {
       }
     }
 
-    // For string variables, make a numeric counterpart that has as value the
+    // 对于字符串变量，使数值对应的值为
+
     // index of the value
 
     data.forEach(function(d) {
@@ -130,7 +131,7 @@ ScatterMatrix.prototype.render = function () {
 
         var filter_li =
           filter_control
-            .append('p').text('Filter by '+variable+': ')
+            .append('p').text('通过'+variable+'过滤: ')
             .append('ul')
             .selectAll('li')
             .data(values)
@@ -159,7 +160,7 @@ ScatterMatrix.prototype.render = function () {
       }
     }
 
-    size_a = size_control.append('p').text('Change plot size: ');
+    size_a = size_control.append('p').text('改变图形大小: ');
     size_a.append('a')
           .attr('href', 'javascript:void(0);')
           .html('-')
@@ -176,7 +177,7 @@ ScatterMatrix.prototype.render = function () {
             self.__draw(self.__cell_size, svg, color_variable, selected_colors, to_include, drill_variables);
           });
 
-    color_control.append('p').text('Select a variable to color:');
+    color_control.append('p').text('选择色彩模式:');
     color_control
       .append('ul')
       .selectAll('li')
@@ -184,7 +185,7 @@ ScatterMatrix.prototype.render = function () {
       .enter().append('li')
         .append('a')
           .attr('href', 'javascript:void(0);')
-          .text(function(d) { return d ? d : 'None'; })
+          .text(function(d) { return d ? d : '无'; })
           .on('click', function(d, i) {
             color_variable = d;
             set_filter(d);
@@ -193,7 +194,7 @@ ScatterMatrix.prototype.render = function () {
 
     var variable_li =
       variable_control
-        .append('p').text('Include variables: ')
+        .append('p').text('包含变量: ')
         .append('ul')
         .selectAll('li')
         .data(self.__numeric_variables)
@@ -220,7 +221,7 @@ ScatterMatrix.prototype.render = function () {
 
     drill_li = 
       drill_control
-        .append('p').text('Drill and Expand: ')
+        .append('p').text('钻与拓展: ')
         .append('ul')
         .selectAll('li')
         .data(original_numeric_variables.concat(string_variables))
@@ -453,7 +454,7 @@ ScatterMatrix.prototype.__draw =
 
     // Add titles for y variables
     cell.filter(function(d) { return d.i == 0; }).append("svg:text")
-        .attr("x", padding-size)
+        .attr("x", padding-size+10)
         .attr("y", -label_height)
         .attr("dy", ".71em")
         .attr("transform", function(d) { return "rotate(-90)"; })
