@@ -809,14 +809,14 @@ function buildGUI(selector, opts) {
         .attr("id","rectangular")
         .attr("title","输出矩形树结构")
         .attr("onclick","options.treeType = this.id; updateTree();")
-        .html('矩形')
+        .html('圆形')
 
     tmp.append("button")
         .attr("class","btn btn-danger")
         .attr("id","radial")
         .attr("title","输出圆形树结构")
         .attr("onclick","options.treeType = this.id; updateTree();")
-        .html('圆形')
+        .html('矩形')
 
     tmp.append("button")
         .attr("class","btn btn-success")
