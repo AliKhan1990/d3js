@@ -1,0 +1,52 @@
+{
+    "d3name": "TERP Promoter",
+    "genos": {
+        "id": [
+            "TP53",
+            "TSC1",
+            "TP53"
+        ],
+        "val": 10,
+        
+        "left": {
+                "id": [
+                    "R1"
+                ],
+                "val": 3,
+                "right":
+                    {
+                        "id": "R3",
+                        "val": 5
+                    }
+              
+            },
+        "right":{
+                "id": [
+                    "C6orf118"
+                ],
+                "val": 4,
+                "left": 
+                    {
+                        "id": "R5",
+                        "val": 4
+                    },
+                   "right": {
+                        "id": "PCLO",
+                        "val": 4,
+                        "left": 
+                            {
+                                "id": "R6",
+                                "val": 1
+                            },
+                        "right":
+                            {
+                                "id": "R8",
+                                "val": 1
+                            }
+                       
+                    }
+             
+            }
+
+    }
+}

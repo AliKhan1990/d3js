@@ -1,0 +1,42 @@
+{
+        "id": 
+            "TP53 TSC1 TP53"
+        ,
+        "val": 10,
+        
+        "children": [
+        {
+                "id":  "R1",
+                "val": 3,
+                "children":[{
+                        "id": "R3",
+                        "val": 5
+                    }]
+            },
+            {
+                "id": "C6orf118",
+                "val": 4,
+                "children": 
+                    [{
+                        "id": "R5",
+                        "val": 4
+                    },
+                    {
+                        "id": "PCLO",
+                        "val": 4,
+                        "children": 
+                            [{
+                                "id": "R6",
+                                "val": 1
+                            },
+                            {
+                                "id": "R8",
+                                "val": 1
+                            }]
+                       
+                    }]
+             
+            }]
+        
+
+    }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+//
+.node text {
+  font: 10px sans-serif;
+}
+
+.link { 
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+</style>
+<body>
+<script src="../lib/d3.v3.min.js"></script>
+<script>
+
+var width = 900,
+    height = 600,
+    preOrder,nodes,arrId = [];
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+d3.json("data.json", function(json) {
+	nodes = json.genos;
+	var chartName = json.d3name;
+	//遍历
+	preOrder = function (nodes) { 
+	 if (nodes) {  
+//	  console.log(arrId);
+	  
+	  //绘制root
+	  if(nodes.val){
+	  	arrId.push(nodes.val);
+	  }
+
+	  preOrder(nodes.left);
+	  preOrder(nodes.right);
+	 }
+	}
+	preOrder(nodes);
+	
+	
+	
+	//绘制图表名称
+	svg.append("text")
+		.attr("text-anchor","middle")
+		.attr("transform",function(){ return "translate(100,30)" })
+		.attr("dy",".35em")
+		.attr("fill","#ccc")
+		.text(chartName);
+		
+		console.log(arrId);
+	  
+	  svg.selectAll(".line")
+	  	 .data(arrId)
+	  	 .enter()
+	  	 .append("line")
+	  	 .attr("x1",10)
+	  	 .attr("x2",10)
+	  	 .attr("y1",function(){ return 0 })
+	  	 .attr("y2",function(d){ return d*10+5 })
+	     .attr("stroke","grey")
+	     .attr("stroke-width","3px")
+	     .attr("fill","none");
+
+})
+
+
+
+</script>
