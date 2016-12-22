@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.label{
+  font-family: Arial;
+  font-size: 15px;
+  fill:black;
+}
+.axis--x{
+    font-family: Arial; 
+    font-size: 14px;
+}
+.tooltip{
+    position: absolute;
+    width: 150;
+    height: auto;
+    font-family: simsun;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    background-color: black;
+    border-radius: 5px;
+}
+.tooltip:after{
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left:20%;
+    margin-left: -8px;
+    width: 0;
+    height: 0;   
+    border-bottom: 12px solid #000000;
+    border-right: 12px solid transparent;
+    border-left: 12px solid transparent;
+    box-shadow: h-shadow v-shadow blur spread color inset;
+} 
+    .axis--x text{
+        transform: rotate(45deg); 
+        text-align: left;
+        text-anchor: initial;
+    }
+    .axis--x text[class="label"]{
+    	transform: rotate(0deg);
+    }
+</style>
+<svg width="600" height="400"></svg>
+<script src="d3.js"></script>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+<script>
+
+var svg = d3.select("svg"),
+    margin = {top: 20, right: 20, bottom: 100, left: 100},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom;
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("prostate.stat.bar.csv", function(error, data) {
+  if (error) throw error;
+  data.forEach(function(d){
+      d.Overlap = +d.Overlap;
+})
+  x.domain(data.map(function(d) { return d.Type; }));
+  y.domain([0, d3.max(data, function(d) { return d.Overlap; })]);
+    
+  g.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width/2)
+      .attr("y", margin.bottom/2)
+      .style("text-anchor", "middle")
+      .text("Type");
+
+  g.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y))
+      .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", -margin.left/2)
+      .attr("x",0-(height/2))
+      .style("text-anchor","middle")
+      .attr("dy", "1em")
+      .text("Overlap");
+
+  var rect = g.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.Type); })
+      .attr("y", function(d) { return y(d.Overlap); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.Overlap); });
+
+   var tooltip = d3.select("body").append("div")
+	    .attr("class","tooltip")
+        .style("opacity",0.0);
+		
+    rect.on("mouseover",function(d){
+            /*
+            鼠标移入时，
+            （1）通过 selection.html() 来更改提示框的文字
+            （2）通过更改样式 left 和 top 来设定提示框的位置
+            （3）设定提示框的透明度为1.0（完全不透明）
+            */
+			 tooltip.html(d.Type + ":" +d.Overlap)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY + 20) + "px")
+                    .style("opacity",1.0);
+            })
+            .on("mousemove",function(d){
+               /* 鼠标移动时，更改样式 left 和 top 来改变提示框的位置 */
+			      tooltip.style("left", (d3.event.pageX) + "px")
+                     .style("top", (d3.event.pageY + 20) + "px");;
+            })
+            .on("mouseout",function(d){
+                        /* 鼠标移出时，将透明度设定为0.0（完全透明）*/
+			      tooltip.style("opacity",0.0);
+            });
+});
+
+    
+
+</script>

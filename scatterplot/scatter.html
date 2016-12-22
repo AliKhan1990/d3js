@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+}
+.label{
+  font-family: Arial;
+  font-size: 20px;
+}
+.tooltip{
+    position: absolute;
+    width: 120;
+    height: auto;
+    font-family: simsun;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    border-style: solid;
+    border-width: 2px;
+    background-color: black;
+    border-radius: 5px;
+}
+.tooltip:after{  
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left:20%;
+    margin-left: -8px;
+    width: 0;
+    height: 0;   
+    border-bottom: 12px solid #000000;
+    border-right: 12px solid transparent;
+    border-left: 12px solid transparent;
+    box-shadow: h-shadow v-shadow blur spread color inset;
+}
+</style>
+<body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 50, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scale.linear()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var color = d3.scale.ordinal()
+            .range(["#00FF00","#BEBEBE","#FF0200"]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .tickValues([0,1,2,3,4,5])
+    .orient("left");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("prostate.MUC4.distr.csv", function(error, data) {
+  if (error) throw error;
+
+  data.forEach(function(d) {
+    d.Amino_acid_position = +d.Amino_acid_position;
+    d.Frequency = +d.Frequency;
+  });
+
+  x.domain(d3.extent(data, function(d) { return d.Amino_acid_position; })).nice();
+  y.domain([0,d3.max(data,function(d) {return d.Frequency;})+1]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width/2)
+      .attr("y", margin.bottom-10)
+      .style("text-anchor", "middle")
+      .text("Amino acid position");
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0-margin.left)
+      .attr("x",0-(height/2))
+      .attr("dy", "1em")
+      .text("Frequency");
+    
+  svg.selectAll(".line")
+        .data(data)
+    .enter().append("line")
+        .attr("x1",function(d) { return x(d.Amino_acid_position); })
+        .attr("y1",y(0))
+        .attr("x2",function(d) { return x(d.Amino_acid_position); })
+        .attr("y2",function(d) { return y(d.Frequency); })
+        .style("stroke", "#BEBEBE")
+        .style("stroke-width",1)
+  ;
+  var dot = svg.selectAll(".dot")
+      .data(data)
+    .enter().append("circle")
+      .attr("class", "dot")
+      .attr("r", 8)
+      .attr("cx", function(d) { return x(d.Amino_acid_position); })
+      .attr("cy", function(d) { return y(d.Frequency); })
+      .style("fill", function(d) { return color(d.Type); });    
+    
+  var legend = svg.selectAll(".legend")
+      .data(color.domain())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+  legend.append("circle")
+      .attr("cx", 50)
+      .attr("cy",9)
+      .attr("r", 8)
+      .style("fill", color);
+
+  legend.append("text")
+      .attr("x", 60)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "start")
+      .text(function(d) { return d; });
+    
+    //添加一个提示框
+    var tooltip = d3.select("body").append("div")
+        .attr("class","tooltip")
+        .style("opacity",0.0);
+		  
+    dot.on("mouseover",function(d,i){
+        /*
+        鼠标移入时，
+        （1）通过 selection.html() 来更改提示框的文字
+        （2）通过更改样式 left 和 top 来设定提示框的位置
+        （3）设定提示框的透明度为1.0（完全不透明）
+        */
+		  		
+        tooltip.html("x: " + d.Amino_acid_position+"<br/>" +"y: "+d.Frequency)
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY + 20) + "px")
+            .style("opacity",1.0)
+        ;
+    })
+        .on("mousemove",function(d){
+        /* 鼠标移动时，更改样式 left 和 top 来改变提示框的位置 */
+		  		
+        tooltip.style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY + 20) + "px");;
+    })
+        .on("mouseout",function(d){
+        /* 鼠标移出时，将透明度设定为0.0（完全透明）*/
+		  		
+        tooltip.style("opacity",0.0);
+    });    
+
+});
+
+</script>
