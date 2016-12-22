@@ -24,18 +24,18 @@
 		<svg width="960" height="600"></svg>
 	</body>
 	<script>
-	var svg = d3.select("svg"),
+	var svg = d3v4.select("svg"),
 	    width = +svg.attr("width"),
 	    height = +svg.attr("height");
 	
-	var color = d3.scaleOrdinal(d3.schemeCategory20);
+	var color = d3v4.scaleOrdinal(d3v4.schemeCategory20);
 	
-	var simulation = d3.forceSimulation()
-	    .force("link", d3.forceLink().distance(80).id(function(d) { return d.id; }))
-	    .force("charge", d3.forceManyBody())
-	    .force("center", d3.forceCenter(width / 2, height / 2))
+	var simulation = d3v4.forceSimulation()
+	    .force("link", d3v4.forceLink().distance(80).id(function(d) { return d.id; }))
+	    .force("charge", d3v4.forceManyBody())
+	    .force("center", d3v4.forceCenter(width / 2, height / 2))
 
-	d3.json("miserables.json", function(error, graph) {
+	d3v4.json("miserables.json", function(error, graph) {
 	  if (error) throw error;
 	//权重线
 	  var link = svg.append("g")
@@ -60,7 +60,7 @@
 	    .enter().append("circle")
 	      .attr("r", 8)
 	      .attr("fill", function(d) { return color(d.group); })
-	      .call(d3.drag()
+	      .call(d3v4.drag()
 	          .on("start", dragstarted)
 	          .on("drag", dragged)
 	          .on("end", dragended))
@@ -73,7 +73,7 @@
 					.attr("dy", ".002em")
       				.attr("fill", function(d) { return color(d.group); })
       				.text(function(d) { return d.id; })
-				      .call(d3.drag()
+				      .call(d3v4.drag()
 				          .on("start", dragstarted)
 				          .on("drag", dragged)
 				          .on("end", dragended))
@@ -103,18 +103,18 @@
 	});
 	
 	function dragstarted(d) {
-	  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+	  if (!d3v4.event.active) simulation.alphaTarget(0.3).restart();
 	  d.fx = d.x;
 	  d.fy = d.y;
 	}
 	
 	function dragged(d) {
-	  d.fx = d3.event.x;
-	  d.fy = d3.event.y;
+	  d.fx = d3v4.event.x;
+	  d.fy = d3v4.event.y;
 	}
 	
 	function dragended(d) {
-	  if (!d3.event.active) simulation.alphaTarget(0);
+	  if (!d3v4.event.active) simulation.alphaTarget(0);
 	  d.fx = null;
 	  d.fy = null;
 	}
